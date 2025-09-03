@@ -77,9 +77,12 @@ const Analysis = () => {
   const CustomizedContent = (props: any) => {
     const { root, depth, x, y, width, height, index, name, changePercent, value } = props;
     
+    // Safely handle potentially undefined changePercent
+    const safeChangePercent = changePercent ?? 0;
+    
     // Color based on change percent (green for positive, red for negative)
-    const color = changePercent >= 0 ? "#4ade80" : "#f87171";
-    const cellValue = changePercent >= 0 ? `+${changePercent.toFixed(2)}%` : `${changePercent.toFixed(2)}%`;
+    const color = safeChangePercent >= 0 ? "#4ade80" : "#f87171";
+    const cellValue = safeChangePercent >= 0 ? `+${safeChangePercent.toFixed(2)}%` : `${safeChangePercent.toFixed(2)}%`;
 
     return (
       <g>
@@ -195,9 +198,9 @@ const Analysis = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">${crypto.price < 1 ? crypto.price.toFixed(4) : crypto.price.toFixed(2)}</div>
-                  <div className={`text-sm ${crypto.change >= 0 ? 'text-green-500' : 'text-red-500'}`}>
-                    {crypto.change >= 0 ? '+' : ''}{crypto.change.toFixed(2)}%
+                  <div className="text-2xl font-bold">${crypto.price < 1 ? (crypto.price ?? 0).toFixed(4) : (crypto.price ?? 0).toFixed(2)}</div>
+                  <div className={`text-sm ${(crypto.change ?? 0) >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                    {(crypto.change ?? 0) >= 0 ? '+' : ''}{(crypto.change ?? 0).toFixed(2)}%
                   </div>
                   <div className="mt-2 text-xs text-muted-foreground">
                     <div className="flex justify-between">
@@ -300,10 +303,10 @@ const Analysis = () => {
                           </div>
                         </td>
                         <td className="text-right py-3 px-4">
-                          ${crypto.price < 1 ? crypto.price.toFixed(4) : crypto.price.toFixed(2)}
+                          ${(crypto.price ?? 0) < 1 ? (crypto.price ?? 0).toFixed(4) : (crypto.price ?? 0).toFixed(2)}
                         </td>
-                        <td className={`text-right py-3 px-4 ${crypto.change >= 0 ? 'text-green-500' : 'text-red-500'}`}>
-                          {crypto.change >= 0 ? '+' : ''}{crypto.change.toFixed(2)}%
+                        <td className={`text-right py-3 px-4 ${(crypto.change ?? 0) >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                          {(crypto.change ?? 0) >= 0 ? '+' : ''}{(crypto.change ?? 0).toFixed(2)}%
                         </td>
                         <td className="text-right py-3 px-4">{formatNumber(crypto.marketCap)}</td>
                         <td className="text-right py-3 px-4">{formatNumber(crypto.volume)}</td>
